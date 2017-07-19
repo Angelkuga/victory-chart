@@ -1,8 +1,25 @@
-import { assign, defaults, flatten, isFunction, partialRight, uniq, some } from "lodash";
+import { assign, defaults, flatten, isFunction, partialRight, uniq, some, isEqual } from "lodash";
 import React from "react";
 import Axis from "./axis";
 import { Style, Transitions, Collection, Data, Domain, Events } from "victory-core";
 
+const areVictoryPropsEqual = (a, b) => (
+  Object.keys(a).reduce((equal, key) => {
+    if (!equal) { return false; } // exit early if inequality found
+    const aProp = a[key];
+    const bProp = b[key];
+    if (key === "sharedEvents") { // go deeper on these props
+      return areVictoryPropsEqual(aProp, bProp);
+    } else if (key === "getEvents" || key === "getEventState") {
+      return true; // mark these props equal at all times
+    } else {
+      return isEqual(aProp, bProp);
+    }
+  }, true)
+);
+
+export const shouldVictoryComponentUpdate = (props, nextProps) =>
+  props.animating || !areVictoryPropsEqual(props, nextProps);
 
 export default {
   getData(props, childComponents) {

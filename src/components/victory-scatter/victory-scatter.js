@@ -7,6 +7,7 @@ import {
 } from "victory-core";
 import ScatterHelpers from "./helper-methods";
 import { BaseProps, DataProps } from "../../helpers/common-props";
+import { shouldVictoryComponentUpdate } from "../../helpers/wrapper";
 
 const fallbackProps = {
   width: 450,
@@ -58,6 +59,10 @@ class VictoryScatter extends React.Component {
   static expectedComponents = [
     "dataComponent", "labelComponent", "groupComponent", "containerComponent"
   ];
+
+  shouldComponentUpdate(nextProps) {
+    return shouldVictoryComponentUpdate(this.props, nextProps);
+  }
 
   // Overridden in native versions
   shouldAnimate() {

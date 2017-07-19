@@ -7,6 +7,7 @@ import {
 } from "victory-core";
 import CandlestickHelpers from "./helper-methods";
 import { BaseProps, DataProps } from "../../helpers/common-props";
+import { shouldVictoryComponentUpdate } from "../../helpers/wrapper";
 
 /*eslint-disable no-magic-numbers */
 const fallbackProps = {
@@ -89,6 +90,10 @@ class VictoryCandlestick extends React.Component {
   static expectedComponents = [
     "dataComponent", "labelComponent", "groupComponent", "containerComponent"
   ];
+
+  shouldComponentUpdate(nextProps) {
+    return shouldVictoryComponentUpdate(this.props, nextProps);
+  }
 
   // Overridden in native versions
   shouldAnimate() {

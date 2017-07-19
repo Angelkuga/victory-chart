@@ -6,6 +6,7 @@ import {
 } from "victory-core";
 import VoronoiHelpers from "./helper-methods";
 import { BaseProps, DataProps } from "../../helpers/common-props";
+import { shouldVictoryComponentUpdate } from "../../helpers/wrapper";
 
 const fallbackProps = {
   width: 450,
@@ -46,6 +47,10 @@ class VictoryVoronoi extends React.Component {
   static expectedComponents = [
     "dataComponent", "labelComponent", "groupComponent", "containerComponent"
   ];
+
+  shouldComponentUpdate(nextProps) {
+    return shouldVictoryComponentUpdate(this.props, nextProps);
+  }
 
   // Overridden in native versions
   shouldAnimate() {
